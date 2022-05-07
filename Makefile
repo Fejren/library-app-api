@@ -14,7 +14,7 @@ admin:
 	docker-compose run app python manage.py createsuperuser
 
 test:
-	docker-compose run app python manage.py test
+	docker-compose run app python manage.py test core.tests user.tests book.tests
 
 migrations:
 	docker-compose run app python manage.py makemigrations

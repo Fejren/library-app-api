@@ -105,7 +105,7 @@ class Book(CatalogueMixin):
     summary = models.TextField(max_length=1000)
     num_of_pages = models.IntegerField()
     isbn = ISBNField(unique=True)
-    year_of_publish = models.DateTimeField()
+    year_of_publish = models.DateField()
     cover = models.ImageField(null=True, upload_to=cover_image_file_path)
     genre = models.ManyToManyField(
         Genre,
