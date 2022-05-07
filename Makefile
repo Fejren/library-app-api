@@ -10,6 +10,9 @@ stop:
 build:
 	docker-compose build
 
+admin:
+	docker-compose run app python manage.py createsuperuser
+
 test:
 	docker-compose run app python manage.py test
 
