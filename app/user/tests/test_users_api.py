@@ -126,14 +126,24 @@ class PrivateUserAPITests(TestCase):
         res = self.client.post(ME_URL, {})
         self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    def test_update_me_not_allowed(self):
+    # Old test
+    # def test_update_me_not_allowed(self):
+    #     payload = {'name': 'NewTestName', 'password': 'gigapssswrd123'}
+    #     res = self.client.patch(ME_URL, payload)
+    #
+    #     self.user.refresh_from_db()
+    #     self.assertNotEqual(self.user.name, payload['name'])
+    #     self.assertFalse(self.user.check_password(payload['password']))
+    #     self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+    #
+    def test_update_me_allowed(self):
         payload = {'name': 'NewTestName', 'password': 'gigapssswrd123'}
         res = self.client.patch(ME_URL, payload)
 
         self.user.refresh_from_db()
-        self.assertNotEqual(self.user.name, payload['name'])
-        self.assertFalse(self.user.check_password(payload['password']))
-        self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+        self.assertEqual(self.user.name, payload['name'])
+        self.assertTrue(self.user.check_password(payload['password']))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
 
     def test_retrieve_profile_success(self):
         # Test retrieving profile for logged in used
