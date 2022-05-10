@@ -17,15 +17,7 @@ class BaseBookAttrViewSet(viewsets.GenericViewSet,
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        # return assigned objects
-        assigned_only = bool(
-            int(self.request.query_params.get('assigned_only', 0))
-        )
-        queryset = self.queryset
-        if assigned_only:
-            queryset = queryset.filter(book__isnull=False)
-
-        return queryset
+        return self.queryset
 
     def perform_create(self, serializer):
         serializer.save()
