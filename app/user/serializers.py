@@ -29,8 +29,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class AuthTokenSerializer(serializers.Serializer):
     # Serializer for user auth token
-    email = serializers.CharField()
-    # name = serializers.CharField()
+    email = serializers.EmailField()
     password = serializers.CharField(
         style={'input_type': 'password'},
         trim_whitespace=False
@@ -39,13 +38,11 @@ class AuthTokenSerializer(serializers.Serializer):
     def validate(self, attrs):
         # Validate and auth the user
         email = attrs.get('email')
-        # name = attrs.get('name')
         password = attrs.get('password')
 
         user = authenticate(
             request=self.context.get('request'),
             username=email,
-            # name=name,
             password=password
         )
         if not user:

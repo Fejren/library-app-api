@@ -1,6 +1,8 @@
 from core.models import Author, PublishingHouse, \
     Genre, Book, BookInstance
-from rest_framework import serializers
+from rest_framework import serializers, request
+from django.contrib.auth import get_user_model
+from user.serializers import UserSerializer
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -58,6 +60,18 @@ class BookDetailSerializer(BookSerializer):
     publishing_house = PublishingHouseSerializer(many=False, read_only=True)
     author = AuthorSerializer(many=False, read_only=True)
     genre = GenreSerializer(many=True, read_only=True)
+
+
+class BookInstanceSerializer(serializers.ModelSerializer):
+    # Serializer for a specific book copy
+    user = get_user_model()
+    book = Book.objects.all()
+
+    class Meta:
+        model = BookInstance
+        fields = ('id', 'status',
+                  'user', 'book')
+        read_only_fields = ('id',)
 
 
 class BookImageSerializer(serializers.ModelSerializer):

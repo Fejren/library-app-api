@@ -9,11 +9,12 @@ from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from core.models import Book, Author, Genre, PublishingHouse
-from book.serializers import BookSerializer, BookDetailSerializer
+from core.models import Book, Author, Genre, PublishingHouse, BookInstance
+from book.serializers import BookSerializer, BookDetailSerializer, \
+    BookInstanceSerializer
 
 BOOK_URL = reverse('book:book-list')
-
+BOOK_INSTANCE_URL = reverse('book:bookinstance-list')
 
 def image_upload_url(book_id):
     # Return URL for book img upload
@@ -54,6 +55,20 @@ def sample_book(**params):
     return Book.objects.create(**defaults)
 
 
+def complete_book_obj():
+    publishing_house = sample_publishing_house()
+    author = sample_author()
+    genre = sample_genre()
+
+    book = sample_book(
+        author=author,
+        publishing_house=publishing_house
+    )
+    book.genre.set([genre])
+
+    return book
+
+
 class PrivateBookAPITest(TestCase):
     # Test auth book API access
 
@@ -68,20 +83,41 @@ class PrivateBookAPITest(TestCase):
 
     def test_retrieve_book(self):
         # Test retrieving a list of recipes
-        publishing_house = sample_publishing_house()
-        author = sample_author()
-        genre = sample_genre()
-
-        book = sample_book(
-            author=author,
-            publishing_house=publishing_house
-        )
-        book.genre.set([genre])
-
+        complete_book_obj()
         res = self.client.get(BOOK_URL)
 
         books = Book.objects.all()
         serializer = BookSerializer(books, many=True)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)
+
+
+class PrivateBookInstanceAPITest(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            name='TestName',
+            email='book@test.com',
+            password='bookpass',
+        )
+        self.client = APIClient()
+        self.client.force_authenticate(self.user)
+
+    def test_retrieve_book_instance(self):
+        book = complete_book_obj()
+        user = get_user_model().objects.create_user(
+            name='User',
+            email='user@user.com',
+            password='userpass'
+        )
+        book_instance = BookInstance.objects.create(
+            book=book,
+            status='a',
+        )
+        book_instance.user.set([user])
+        res = self.client.get(BOOK_INSTANCE_URL)
+        book_instances = BookInstance.objects.all()
+        serializer = BookInstanceSerializer(book_instances, many=True)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)

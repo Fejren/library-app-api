@@ -7,6 +7,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from isbn_field import ISBNField
 
+from app import settings
+
 
 class TimeStampedMixin(models.Model):
     # Abstract model that defines the auto populated 'created_date' and
@@ -137,6 +139,9 @@ class BookInstance(models.Model):
         ('o', 'On loan'),
         ('a', 'Available'),
         ('r', 'Reserved')
+    )
+    user = models.ManyToManyField(
+        settings.AUTH_USER_MODEL
     )
     status = models.CharField(
         max_length=1, choices=LOAN_STATUS, blank=True, default='a'

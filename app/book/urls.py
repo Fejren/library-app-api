@@ -7,6 +7,7 @@ router.register('genre', views.GenreViewSet)
 router.register('author', views.AuthorViewSet)
 router.register('publihouse', views.PublishingHouseViewSet)
 router.register('book', views.BookViewSet)
+router.register('book-instance', views.BookInstanceViewSet)
 
 app_name = 'book'
 
