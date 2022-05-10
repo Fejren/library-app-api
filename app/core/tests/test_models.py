@@ -94,7 +94,7 @@ class ModelTests(TestCase):
             publishing_house=publishing_house,
             isbn=uuid,
             year_of_publish='2022-05-07',
-            num_of_pages=300,
+            number_of_pages=300,
         )
         book.genre.set([genre])
         self.assertEqual(str(book), 'Wiedzmin Tom I')

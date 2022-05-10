@@ -47,7 +47,7 @@ class BookSerializer(serializers.ModelSerializer):
         model = Book
         fields = ('id', 'name', 'author',
                   'publishing_house', 'summary',
-                  'num_of_pages', 'isbn',
+                  'number_of_pages', 'isbn',
                   'year_of_publish',
                   'genre')
         read_only_fields = ('id',)

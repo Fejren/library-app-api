@@ -103,7 +103,7 @@ class Book(CatalogueMixin):
     publishing_house = models.ForeignKey(PublishingHouse,
                                          on_delete=models.CASCADE)
     summary = models.TextField(max_length=1000)
-    num_of_pages = models.IntegerField()
+    number_of_pages = models.IntegerField()
     isbn = ISBNField(unique=True)
     year_of_publish = models.DateField()
     cover = models.ImageField(null=True, upload_to=cover_image_file_path)

@@ -44,7 +44,7 @@ def sample_book(**params):
     # Create sample book
     defaults = {
         'name': 'Wiedzmin',
-        'num_of_pages': 300,
+        'number_of_pages': 300,
         'year_of_publish': '2000-11-11',
         'summary': '*jakies streszczenie*',
         'isbn': '978-83-7578-063-5',
