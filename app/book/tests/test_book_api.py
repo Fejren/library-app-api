@@ -82,7 +82,7 @@ class PrivateBookAPITest(TestCase):
         self.client.force_authenticate(self.user)
 
     def test_retrieve_book(self):
-        # Test retrieving a list of recipes
+        # Test retrieving a list of books
         complete_book_obj()
         res = self.client.get(BOOK_URL)
 
